@@ -19,6 +19,7 @@
        - floating thì mình cũng chưa hiểu rõ nữa hì hì.
        - input_pullup: dùng điện trở kéo lên nguồn, trạng thái mặc định là 1.
        - input_pulldown: dùng điện trở kéo xuống đất, trạng thái mặc định là 0.
+         
     *Để hiểu rõ hơn thì nôn na là: ví dụ bạn có 1 nút nhấn đi, bạn để trạng thái mặc định là 1(tức là chưa làm gì thì trạng thái nó là 1), khi tác động trạng thái nó là 0. Lúc đó bạn thiết kế bài toán
 là nhấn nút led sẽ sáng thì làm sao nó biết được là bạn nhấn nút? thì lúc đó nếu nó nhận được tín hiệu 0(tức là có sự thay đổi trạng thái từ 0 về 1) thì nó sẽ thực hiện lệnh bật đèn.*
 
@@ -26,6 +27,7 @@ là nhấn nút led sẽ sáng thì làm sao nó biết được là bạn nhấ
        - open drain: mn muốn hiểu rõ thì search gg để xem nha còn mình cứ hiểu nôn na là nó có 2 trạng thái là 0 và mức trở kháng cao *(không phải là 1)*
          
        - push pull: cũng có 2 chế độ **pull-up & pull-down** giống ở phía trên.
+         
     *Khi nào dùng opendrain và khi nào dùng push-pull? Khi bạn muốn on/off,pwm thì dùng push. Còn opendrain chưa dùng nên chưa biết , nào biết update sau 😊*
 
   - Speed: tốc độ đáp ứng thì tùy mình thôi.
