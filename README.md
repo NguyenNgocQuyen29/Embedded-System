@@ -79,9 +79,23 @@ Trạng thái các xung Clock được xác định dựa vào CPOL và CPHA"
 
 ### 3.I2C - Inter-Integrated Circuit ##
 I2C:
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/d6784c65-8f3b-4f47-adcc-47d9da5e31e0)
+
   >- Là chuẩn giao tiếp nối tiếp.
-  >- Hoạt động ở chế độ bán song công(tức là tại một thời điểm thì nó chỉ có thể truyền hoặc nhận).
-  >- Sử dụng 2 dây: SCL, SDA.
+  >- Hoạt động ở chế độ bán song công(tức là tại một thời điểm thì nó chỉ có thể truyền hoặc nhận, nếu muốn nhận phải đợi truyền xong).
+  >- Sử dụng 2 dây: SCL, SDA, 2 dây này được gắn vào điện trở kéo lên nguồn.
+
+***Bán song công vì: nó chỉ có 2 dây 1 là SCL(clock) và 1 dây là SDA để truyền, chỉ có 1 dây nên không thể 1 lúc mà vừa truyền vừa nhận dữ liệu được.****
+I2C nó không truyền theo từng bit giống như SPI mà nó sẽ truyền theo từng frame
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/a13d7528-9d93-4dbd-8c29-2b970a5d46a6)
+
+  >- Đầu tiên phải có start condition( SDA kéo xuống mức 0 trước SCL để tạo ra tín hiệu, bình thường 2 dây này ở mức 1 tại vì nó được gắn vào điện trở kéo lên nguồn).
+  >- Tiếp theo là 7 or 10 bit địa chỉ(tùy thuộc vào chip) và ***1 bit R/W***.
+  >- Phải gửi địa chỉ vì nó cùng 1 lúc truyền nhận nhiều thiết bị, để phân biệt chúng thì mỗi con phải có 1 địa chỉ, khi nó truyền bit địa chỉ thì tất cả sẽ được nhận m, thiết bị nào ứng với địa chỉ đó thì sẽ biết là sắp có quá trình truyền/nhận. Còn bit R/W để nó nói với slave tương ứng với địa chỉ đó là nó sẽ truyền hay đọc dữ liệu( 1 là Read, 2 là Write).
+
+
+
 
 
   
