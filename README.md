@@ -115,6 +115,23 @@ Nếu mà Slave đã nhận data rồi thì phải truyền lại 1 bit gọi l�
 
 
 ### 3.UART - Universal Asynchronous Receiver-Transmitter ##
+Không giống như SPI,I2C có thể thực hiện một lúc nhiều thiết bị, còn UART chỉ 2 thiết bị với nhau.
+UART :
+>- Bất đồng bộ.
+>- 2 dây TX,RX
+>- Hoạt động song công.
+
+Truyền theo frame gồm 8 bit
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/c1e16ab0-4776-4897-8865-eb6f9cd1dcbc)
+
+- Để bắt đầu truyền nhận khi có Start Bit(kéo TX từ 1->0).
+- 5 đến 9 bit dữ liệu.
+- Parity bit (bit chẵn lẻ).
+   + Bit chẵn lẻ kiểm tra xem dữ liệu nhận đúng hay chưa.
+   + Quy luật chẵn: nếu tổng số bit 1 là số chẵn thì bit đó là 0, còn quy luật lẻ là nếu tổng sốt bit lẻ là số chẵn thì thêm số 1.
+- 1 hoặc 2 stop bit().
+
+
 
 
 
