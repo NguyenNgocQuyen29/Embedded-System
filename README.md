@@ -92,8 +92,29 @@ I2C nó không truyền theo từng bit giống như SPI mà nó sẽ truyền t
 
   >- Đầu tiên phải có start condition( SDA kéo xuống mức 0 trước SCL để tạo ra tín hiệu, bình thường 2 dây này ở mức 1 tại vì nó được gắn vào điện trở kéo lên nguồn).
   >- Tiếp theo là 7 or 10 bit địa chỉ(tùy thuộc vào chip) và ***1 bit R/W***.
-  >- Phải gửi địa chỉ vì nó cùng 1 lúc truyền nhận nhiều thiết bị, để phân biệt chúng thì mỗi con phải có 1 địa chỉ, khi nó truyền bit địa chỉ thì tất cả sẽ được nhận m, thiết bị nào ứng với địa chỉ đó thì sẽ biết là sắp có quá trình truyền/nhận. Còn bit R/W để nó nói với slave tương ứng với địa chỉ đó là nó sẽ truyền hay đọc dữ liệu( 1 là Read, 2 là Write).
+  >- Phải gửi địa chỉ vì nó cùng 1 lúc truyền nhận nhiều thiết bị, để phân biệt chúng thì mỗi con phải có 1 địa chỉ, khi nó truyền bit địa chỉ thì tất cả sẽ được nhận m, thiết bị nào ứng với địa chỉ đó thì sẽ biết là sắp có quá trình truyền/nhận. Còn bit R/W để nó nói với slave tương ứng với địa chỉ đó là nó sẽ truyền hay đọc dữ liệu(0:Read là master sẽ đọc được trạng thái của Slave, 1.Write:master viết data cho slave).
+ 
+Ví dụ:
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/81902655-4b05-4d0c-8f14-77b57f254d18)
 
+Ở ví dụ này Master truyền đi *0b10101111* tức là 7 bit địa chỉ và 1 bit W(1). Khi truyèn đến tất cẩ slave, nó readSDA ghi vào 1 thanh ghi, lấy thanh ghi đó >> 1(bỏ biến R/W ra) sau đó ^ với address của mỗi con
+Nếu kết quả là 0 thì tức là địa chỉ của slave đó và thực hiện việc truyền data. (chú ý: 2 số giống nhau ^ sẽ bằng 0, còn khác nhau thì bằng 1).
+
+  >- Bit cuối cùng là ACK để slave báo hiệu cho Master biết là slave đã nhận tín hiệu(báo hiệu bằng cách kéo đường SDA xuống ).
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/df9f5768-cf91-4a9e-ad48-14924c5a729e)
+
+Nếu mà Slave đã nhận data rồi thì phải truyền lại 1 bit gọi là ACK(=0) bit này truyền lên SDA, lúc này Slave thành input để đọc giá trị, nếu mà slave đọc giá trị của SDA là 1 thì là truyền thất bại, phải tryền cái khác hoặc gửi lại. Tóm lại là mỗi lần truyền 8bit thì Master đổi chức năng thành input để đọc xem slave đã nhận được hay chưa.
+
+*Sau khi thực hiện xong quá trình truyền nhận thì kết thúc phải có **stop condition** SCL kéo lên 1 trước*
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/aa2d8985-ea32-4e7a-9154-3e4defbd5f23)
+
+
+**Note: Giao tiếp đồng bộ là giữa các thiết bị truyền nhận có xung clock, còn không có thì là giao tiếp bất đồng bộ, UART là một ví dụ**
+
+
+### 3.UART - Universal Asynchronous Receiver-Transmitter ##
 
 
 
