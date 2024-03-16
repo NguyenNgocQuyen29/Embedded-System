@@ -1,5 +1,4 @@
-#  **I. STM32**
-## 1. GPIO ##
+## LESSION 1. GPIO ##
 ### Để cấu hình cho ngoại vi GPIO ta follow theo các bước sau: ###
   ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/8b64ddcf-fd3c-4214-b78c-0e90d7be0214)
      
@@ -37,7 +36,63 @@ là nhấn nút led sẽ sáng thì làm sao nó biết được là bạn nhấ
     hình sẽ lưu giá trị vào biến đó.
   
   Vậy là đã cấu hình cho 1 chân đã xong, và mình sẽ truyền 2 tham số đó là **tên GPIO**:GPIO cần dùng và **cấu hình mình vừa mới config**: con trỏ tới biến đó.
-    
+  
+## LESSION 2. CÁC CHUẨN GIAO TIẾP CƠ BẢN ##  
+### 1.Truyền nhận dữ liệu ##
+Việc truyền nhận dữ liệu thực chất là việc truyền nhận các tín hiệu điện áp biểu diễn cho các bit, điện áp được truyền nhận trên các chân của Vi điều khiển. 
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/835ae92d-4018-4b5d-a82c-ed16c9e2bf43)
+**Câu hỏi được đặt ra ở đây là :ví dụ 2 bit liền kề nó có cùng mức điện áp thì làm sao MCU nhận biết được đó là 2 bit?** => Đó là lí do tại sao có các kiểu giao tiếp sau đây.
+### 2.SPI - Serial Peripheral Interface ##
+SPI 
+  >- Là chuẩn giao tiếp nối tiếp(các bit sẽ được truyền đi lần lượt) đồng bộ.
+  >- Hoạt động ở chế độ song công(ở cùng thời điểm có thể vừa truyền vừa nhận).
+  >- Sử dụng 4 dây.
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/6fcc1cb1-7746-4101-94ba-497b05fcc2a8)
+
+>- SCK: Serial Clock. Thiết bị tạo clock là master và cung cấp clock cho slave. Sở dỉ là giao tiếp đồng bộ vì kiểu master và slave có chung 1 dây SCK để điều khiển truyền hay nhận của 2 thiết bị.
+>- MOSI: Master Out Slave In . Tín hiệu tạo bởi master và Slave nhận tín hiệu.
+>- MISO: Master In Slave Out. Tín hiệu tạo bởi Slave và Master nhận tín hiệu
+>- SS: Select Slave. Chọn thiết bị Slave để giao tiếp. Để chọn được thì *Master kéo đường SS tương ứng xuống mức 0(bình thường SS ở mức 1)*.
+
+Quá trình truyền nhận SPI:
+ ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/d4ed44ed-206e-4517-93eb-ea22abf7cb8d)
+
+- Việc truyền data thì nó cũng sẽ đi từng bước lần lượt. Mỗi bit đi nó sẽ cấp 1 xung clock(xung clock được cấp bằng cách kéo chân SCK lên 1 rồi về 0, bình thường trạng thái SCK là 0).
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/bafed7bc-b5ab-4869-968b-a773cd95aaa6)
+
+    - Bắt đầu truyền nhận master sẽ kéo chân CS của slave xuống 0 để báo hiệu quá trình truyền nhận.
+    - Clock sẽ được cấp bởi master ,mỗi xung clock thì Slave sẽ truyền đi 1 bit cho master và slave cũng truyền 1bit cho master.
+    - Các thanh ghi cập nhật giá trị truyền nhận và dịch 1 bit.
+    - truyền cho tới khi hết 8 bit.
+    - Giao tiếp song công(một lúc có thể truyền nhận).
+
+Trạng thái các xung Clock được xác định dựa vào CPOL và CPHA"
+- CPOL:
+   + Bằng 0 thì lúc mặc định là 0. Muốn tạo ra clock để báo hiệu truyền nhận thì ta kéo nó từ 0 lên 1 rồi về 0 là tạo ra 1 xung clock để truyền nhận 1 bit
+   + Bằng 1 thì lúc mặc định là 1. Muốn tạo ra clock để báo hiệu truyềnn nhận thì ta kéo nó từ 1 xuống 0 rồi về 1 là tạo ra 1 xung clock để truyền nhận 1 bit.
+- CPHA:
+   + Bằng 0: tức là mình đưa bit vào trước mới cấp clock.
+   + Bằng 1: tức là mình cấp clock rồi mới đưa bit vào.
+
+### 3.I2C - Inter-Integrated Circuit ##
+I2C:
+  >- Là chuẩn giao tiếp nối tiếp.
+  >- Hoạt động ở chế độ bán song công(tức là tại một thời điểm thì nó chỉ có thể truyền hoặc nhận).
+  >- Sử dụng 2 dây: SCL, SDA.
+
+
+  
+
+
+
+
+
+
+
+
    
 
 
