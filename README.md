@@ -63,8 +63,9 @@ Quá trình truyền nhận SPI:
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/bafed7bc-b5ab-4869-968b-a773cd95aaa6)
 
+
     - Bắt đầu truyền nhận master sẽ kéo chân CS của slave xuống 0 để báo hiệu quá trình truyền nhận.
-    - Clock sẽ được cấp bởi master ,mỗi xung clock thì Slave sẽ truyền đi 1 bit cho master và slave cũng truyền 1bit cho master.
+    - Clock sẽ được cấp bởi master ,mỗi xung clock thì Master sẽ truyền 1 bit cho slaveslave và slave cũng truyền 1bit cho master.
     - Các thanh ghi cập nhật giá trị truyền nhận và dịch 1 bit.
     - truyền cho tới khi hết 8 bit.
     - Giao tiếp song công(một lúc có thể truyền nhận).
