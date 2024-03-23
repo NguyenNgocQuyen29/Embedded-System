@@ -105,7 +105,7 @@ Nếu kết quả là 0 thì tức là địa chỉ của slave đó và thực 
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/df9f5768-cf91-4a9e-ad48-14924c5a729e)
 
-Nếu mà Slave đã nhận data rồi thì phải truyền lại 1 bit gọi là ACK(=0) bit này truyền lên SDA, lúc này Slave thành input để đọc giá trị, nếu mà slave đọc giá trị của SDA là 1 thì là truyền thất bại, phải tryền cái khác hoặc gửi lại. Tóm lại là mỗi lần truyền 8bit thì Master đổi chức năng thành input để đọc xem slave đã nhận được hay chưa.
+Nếu mà Slave đã nhận data rồi thì phải truyền lại 1 bit gọi là ACK(=0) bit này truyền lên SDA, lúc này Master thành input để đọc giá trị slave gửi tới(bit ACK), nếu mà Master đọc giá trị của SDA là 1 thì là truyền thất bại, phải tryền cái khác hoặc gửi lại. Tóm lại là mỗi lần truyền 8bit thì Master đổi chức năng thành input để đọc xem slave đã nhận được hay chưa.
 
 *Sau khi thực hiện xong quá trình truyền nhận thì kết thúc phải có **stop condition** SCL kéo lên 1 trước*
 
