@@ -62,21 +62,18 @@ SPI
 >- MOSI: Master Out Slave In . Tín hiệu tạo bởi master và Slave nhận tín hiệu.
 >- MISO: Master In Slave Out. Tín hiệu tạo bởi Slave và Master nhận tín hiệu
 >- SS: Select Slave. Chọn thiết bị Slave để giao tiếp. Để chọn được thì *Master kéo đường SS tương ứng xuống mức 0(bình thường SS ở mức 1)*.
+*Giao tiếp bằng chân chọn chip*
 Quá trình truyền nhận SPI:
  ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/d4ed44ed-206e-4517-93eb-ea22abf7cb8d)
 
-- Việc truyền data thì nó cũng sẽ đi từng bước lần lượt. Mỗi bit đi nó sẽ cấp 1 xung clock(xung clock được cấp bằng cách kéo chân SCK lên 1 rồi về 0, bình thường trạng thái SCK là 0).
-
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/bafed7bc-b5ab-4869-968b-a773cd95aaa6)
 
-
     - Bắt đầu truyền nhận master sẽ kéo chân CS của slave xuống 0 để báo hiệu quá trình truyền nhận.
-    - Clock sẽ được cấp bởi master ,mỗi xung clock thì Master sẽ truyền 1 bit cho slaveslave và slave cũng truyền 1bit cho master.
+    - Clock sẽ được cấp bởi master ,mỗi xung clock thì Master sẽ truyền 1 bit cho slave và slave cũng truyền 1bit cho master.
     - Các thanh ghi cập nhật giá trị truyền nhận và dịch 1 bit.
     - truyền cho tới khi hết 8 bit.
-    - Giao tiếp song công(một lúc có thể truyền nhận).
 
-Trạng thái các xung Clock được xác định dựa vào CPOL và CPHA"
+Các mode của SPI: trạng thái các xung Clock được xác định dựa vào CPOL và CPHA"
 - CPOL:
    + Bằng 0 thì lúc mặc định là 0. Muốn tạo ra clock để báo hiệu truyền nhận thì ta kéo nó từ 0 lên 1 rồi về 0 là tạo ra 1 xung clock để truyền nhận 1 bit
    + Bằng 1 thì lúc mặc định là 1. Muốn tạo ra clock để báo hiệu truyềnn nhận thì ta kéo nó từ 1 xuống 0 rồi về 1 là tạo ra 1 xung clock để truyền nhận 1 bit.
@@ -88,11 +85,12 @@ Trạng thái các xung Clock được xác định dựa vào CPOL và CPHA"
 I2C:
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/d6784c65-8f3b-4f47-adcc-47d9da5e31e0)
 
-  >- Là chuẩn giao tiếp nối tiếp.
   >- Hoạt động ở chế độ bán song công(tức là tại một thời điểm thì nó chỉ có thể truyền hoặc nhận, nếu muốn nhận phải đợi truyền xong).
   >- Sử dụng 2 dây: SCL, SDA, 2 dây này được gắn vào điện trở kéo lên nguồn.
 ***Bán song công vì: nó chỉ có 2 dây 1 là SCL(clock) và 1 dây là SDA để truyền, chỉ có 1 dây nên không thể 1 lúc mà vừa truyền vừa nhận dữ liệu được.****
-I2C nó không truyền theo từng bit giống như SPI mà nó sẽ truyền theo từng frame
+- I2C nó không truyền theo từng bit giống như SPI mà nó sẽ truyền theo từng frame
+- I2C giao tiếp bằng địa chỉ
+Data frame của I2C:
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/a13d7528-9d93-4dbd-8c29-2b970a5d46a6)
 
@@ -111,7 +109,7 @@ Nếu kết quả là 0 thì tức là địa chỉ của slave đó và thực 
 
 Nếu mà Slave đã nhận data rồi thì phải truyền lại 1 bit gọi là ACK(=0) bit này truyền lên SDA, lúc này Master thành input để đọc giá trị slave gửi tới(bit ACK), nếu mà Master đọc giá trị của SDA là 1 thì là truyền thất bại, phải tryền cái khác hoặc gửi lại. Tóm lại là mỗi lần truyền 8bit thì Master đổi chức năng thành input để đọc xem slave đã nhận được hay chưa.
 
-*Sau khi thực hiện xong quá trình truyền nhận thì kết thúc phải có **stop condition** SCL kéo lên 1 trước*
+  >- Sau khi thực hiện xong quá trình truyền nhận thì kết thúc phải có **stop condition** SCL kéo lên 1 trước.
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/aa2d8985-ea32-4e7a-9154-3e4defbd5f23)
 
@@ -120,8 +118,8 @@ Nếu mà Slave đã nhận data rồi thì phải truyền lại 1 bit gọi l�
 
 
 ### 3.UART - Universal Asynchronous Receiver-Transmitter ##
-Không giống như SPI,I2C có thể thực hiện một lúc nhiều thiết bị, còn UART chỉ 2 thiết bị với nhau.
-
+Không giống như SPI,I2C có thể thực hiện một lúc nhiều thiết bị, còn UART chỉ 2 thiết bị với nhau(giao tiếp 1 - 1)
+Tại vì bất đồng bộ nên để 2 chủ thể có thể biết mà tương tác với nhau thì dựa vào **baudrate**. Khác baudrate vẫn truyền được nhưng dư liệu truyền, nhận sẽ bị sai.
 UART :
 >- Bất đồng bộ.
 >- 2 dây TX,RX
@@ -132,11 +130,14 @@ Truyền theo frame gồm 8 bit
 
 - Để bắt đầu truyền nhận khi có Start Bit(kéo TX từ 1->0).
 - 5 đến 9 bit dữ liệu.
-- Parity bit (bit chẵn lẻ).
+- 0 to 1 Parity bit (bit chẵn lẻ).
    + Bit chẵn lẻ kiểm tra xem dữ liệu nhận đúng hay chưa.
    + Quy luật chẵn: nếu tổng số bit 1 là số chẵn thì bit đó là 0, còn quy luật lẻ là nếu tổng sốt bit lẻ là số chẵn thì thêm số 1.
-- 1 hoặc 2 stop bit().
+- 1 hoặc 2 stop bit(kéo chân Rx lên 1).
 
+***So sánh UART, SPI, I2C***
+
+![144962711_249915713337702_340587713684986630_n](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/bda29e02-1576-4909-9c86-33fc4b3c336b)
 
 
 
