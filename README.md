@@ -139,9 +139,17 @@ Truyền theo frame gồm 8 bit
 
 ![144962711_249915713337702_340587713684986630_n](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/bda29e02-1576-4909-9c86-33fc4b3c336b)
 
+</p>
 
+</details>
 
+<details><summary>LESSON 3: CONFIG PERIPHERAL SOFTWARE & HARDWARE</summary>
+</p>
 
+## I2C SOFTWARE (GPIO)
+Các bước để thực hiện I2C software
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/a68e8b34-1f03-460f-b765-1566d218a4a4)
 
   
 
