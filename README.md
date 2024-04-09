@@ -152,14 +152,39 @@ Các bước để thực hiện I2C software
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/a68e8b34-1f03-460f-b765-1566d218a4a4)
 
   
+</p>
+
+</details>
+
+<details><summary>LESSON 4: ADC</summary>
+</p>
+
+</p>
+
+</details>
 
 
+<details><summary>LESSON 5: DMA</summary>
+</p>
+
+</p>
+
+</details>
+
+<details><summary>LESSON 6: Flash & BootLoader</summary>
+</p>
+
+</p>
+
+</details>
 
 
+<details><summary>LESSON 7: CAN</summary>
+</p>
 
+</p>
 
-
-
+</details>
    
 
 
