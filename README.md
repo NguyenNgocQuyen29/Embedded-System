@@ -18,7 +18,7 @@
   - Mode: loại chức năng mà bạn muốn dùng, 2 chức năng cơ bản nhất của GPIO chính là Input và Output. Cú pháp để dùng: **GPIO_Mode_Out_PP** //push-
     
     👀👀Input:(đầu vào) có nhiều loại ví dụ như **floating, input_pullup, input_pulldown**
-       - floating thì mình cũng chưa hiểu rõ nữa hì hì.
+       - floating : tín hiệu trên chân GPIO mặc định ở trạng thái không xác định thường phụ thuộc vào nguồn ở bên 
        - input_pullup: dùng điện trở kéo lên nguồn, trạng thái mặc định là 1.
        - input_pulldown: dùng điện trở kéo xuống đất, trạng thái mặc định là 0.
          
@@ -26,7 +26,7 @@
 là nhấn nút led sẽ sáng thì làm sao nó biết được là bạn nhấn nút? thì lúc đó nếu nó nhận được tín hiệu 0(tức là có sự thay đổi trạng thái từ 0 về 1) thì nó sẽ thực hiện lệnh bật đèn.*
 
     👀👀Output: ở ví dụ trên thì nút nhấn là input và led là output, output có 2 loại đó là opendrain và push-pull(pull-up & pull-down).
-       - open drain: mn muốn hiểu rõ thì search gg để xem nha còn mình cứ hiểu nôn na là nó có 2 trạng thái là 0 và mức trở kháng cao *(không phải là 1)*
+       - open drain: Khi sử dụng mode Push-pull thì trong đó nó cấu hình sẵn một điện trở rồi(kéo lên hoặc kéo xuống) nhưng ở I2C nó đã có sẵn điện trở kéo lên rồi, nên dùng OD để không cần điện trở kéo cho vi điều khiển nữa. Tại vì mình đã có điện trở kéo lên rồi giờ config thêm nó sẽ gây xung đột 
          
        - push pull: cũng có 2 chế độ **pull-up & pull-down** giống ở phía trên.
          
