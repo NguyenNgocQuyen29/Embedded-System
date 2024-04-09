@@ -146,7 +146,7 @@ Truyền theo frame gồm 8 bit
 <details><summary>LESSON 3: CONFIG PERIPHERAL SOFTWARE & HARDWARE</summary>
 </p>
 
-## I2C SOFTWARE (GPIO)
+## a. I2C SOFTWARE (GPIO)
 Các bước để thực hiện I2C software
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/66ad7dc7-24b9-4da4-8677-72acd0979ef0)
@@ -289,7 +289,33 @@ Các bước để thực hiện I2C software
           
           return u8Ret;
         }
+
+## b. I2C HARDWARE - TÍCH HỢP SẴN TRONG VDK
+Các bước thực hiện là: Xác định các chân I2C -> Cấu hình GPIO -> Cấu hình I2C
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/3587dbc2-8f9d-44c2-b0c0-2e17dce2609d)
+
+ - Xác định các chân GPIO
+
+ ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/848a3a4f-1d9f-46ee-84d8-7d46636e7693)
   
+ - Cấu hình GPIO
+
+ ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/8b621881-23ed-43aa-8226-d01a33b02ba4)
+
+ - Cấu hình I2C
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/ca7e26ce-7e88-48b9-afff-3d6ed957c639)
+
+- Các hàm truyền nhận:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/d28ce59f-5be4-4992-ae69-bd5247062c95)
+
+- Hàm kiểm tra cờ, sự kiện:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/97748f79-9365-4795-9331-8e54e54670ba)
+
+
 </p>
 
 </details>
