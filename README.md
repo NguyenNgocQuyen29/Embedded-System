@@ -149,8 +149,146 @@ Truyền theo frame gồm 8 bit
 ## I2C SOFTWARE (GPIO)
 Các bước để thực hiện I2C software
 
-![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/a68e8b34-1f03-460f-b765-1566d218a4a4)
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/66ad7dc7-24b9-4da4-8677-72acd0979ef0)
 
+*Hàm truyền*:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/ef56abe0-268d-44cb-a07a-14d6b4c10cee)
+
+
+        #include "stm32f10x_gpio.h"             // Device:StdPeriph Drivers:GPIO
+        #include "stm32f10x_rcc.h"              // Device:StdPeriph Drivers:RCC
+        #include "stm32f10x_tim.h"              // Device:StdPeriph Drivers:TIM
+        
+        #define I2C_SCL    GPIO_Pin_6
+        #define I2C_SDA    GPIO_Pin_7
+        
+        #define I2C_GPIO   GPIOB
+        
+        
+        
+        #define WRITE_SDA_0       GPIO_ResetBits(I2C_GPIO,I2C_SDA)
+        #define WRITE_SDA_1       GPIO_SetBits(I2C_GPIO,I2C_SDA)
+        #define WRITE_SCL_0       GPIO_ResetBits(I2C_GPIO,I2C_SCL)
+        #define WRITE_SCL_1       GPIO_SetBits(I2C_GPIO,I2C_SCL)
+        #define READ_SDA_VAL      GPIO_ReadInputDataBit(I2C_GPIO,I2C_SDA)
+        
+        typedef enum{
+          NOT_OK = 0,
+          OK
+        }status;
+        typedef enum{
+          NACK = 0,
+          ACK
+        }ACK_Bit;
+        void delay_us(uint32_t delay){
+          TIM_SetCounter(TIM2,0);
+          while(TIM_GetCounter(TIM2)<delay){}
+        }
+        /*
+        * Function: I2C_Config
+        * Description: initial state setting for SDA and SCL is 1
+        */
+        void I2C_Config(){
+              WRITE_SDA_1;
+              delay_us(1);
+              WRITE_SCL_1;
+              delay_us(1);
+        }
+        /*
+        * Function: I2C_Start
+        * Description: Start condition is that SCL pin is pulled down to 0 before SDA pin. To avoid unexpected situations, set both pins to state 1 before Start Condition
+        */
+        void I2C_Start(){
+              //de phong truong hop co nhieu thiet bi truyen voi nhau , lo co truong hop slave dang truyen 0 len duong SDA thi sao nen de mac dinh la 1 
+              WRITE_SDA_1;
+              delay_us(3);
+              WRITE_SCL_1;
+              delay_us(3);
+              WRITE_SDA_0;
+              delay_us(3);
+              WRITE_SCL_0;
+              delay_us(3);
+        }
+        void I2C_Stop(){
+              WRITE_SDA_0;
+              delay_us(3);
+              WRITE_SCL_1;
+              delay_us(3);
+              WRITE_SDA_1;
+              delay_us(3);
+        }
+        void clock(){
+          WRITE_SCL_1;
+          delay_us(5);
+          WRITE_SCL_0;
+          delay_us(2);
+        }
+        status I2C_Write(uint8_t u8Data){
+              uint8_t i;
+              status stRet;
+              for(int i=0; i<8;i++){  //write byte data
+                 if(u8Data & 0x80){
+                   WRITE_SDA_1;
+                 }else{
+                   WRITE_SDA_0;
+                 }
+               delay_us(3);
+               clock();
+               u8Data <<= 1;
+              }
+              //sau khi truyen 8 bit thi SDA keo len 1
+              WRITE_SDA_1;
+              delay_us(3);
+              
+              //xung thu 9 de gui tin hieu ACK
+              //trong luc gui xung thi doc trang thai cua ACK
+              WRITE_SCL_1;
+              delay_us(3);
+              
+              if(READ_SDA_VAL){ //dieu kien dung cua ìf la 1
+                stRet = NOT_OK;
+              }else{
+                stRet = OK;
+              }
+              delay_us(2);
+              WRITE_SCL_0;
+              delay_us(3);
+              
+              return stRet;
+        }
+        uint8_t I2C_Read(ACK_Bit _ACK){
+          uint8_t i;
+          uint8_t u8Ret = 0x00;
+          WRITE_SDA_1;
+          delay_us(3);
+          //doc tin hieu 8bit dau
+          for(i=0;i<8;++i){
+            u8Ret <<= 1;
+            WRITE_SCL_1;
+            delay_us(3);
+                if(READ_SDA_VAL){//neu gia tri SDA la 1 thi them 1 vao thanh ghi
+                  u8Ret |= 0x01;
+                }
+                delay_us(2);
+                
+            WRITE_SCL_0;
+            delay_us(5);
+          }
+          if(_ACK){
+             WRITE_SDA_0;
+          }else{
+             WRITE_SDA_1;		 
+          }
+          delay_us(3);
+          
+          WRITE_SCL_1;
+          delay_us(5);
+          WRITE_SCL_0;
+          delay_us(5);
+          
+          return u8Ret;
+        }
   
 </p>
 
