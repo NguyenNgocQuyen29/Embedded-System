@@ -315,6 +315,8 @@ Các bước thực hiện là: Xác định các chân I2C -> Cấu hình GPIO 
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/97748f79-9365-4795-9331-8e54e54670ba)
 
+## c. UART SOFTWARE (GPIO)
+
 
 </p>
 
