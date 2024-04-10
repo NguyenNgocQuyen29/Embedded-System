@@ -317,6 +317,144 @@ Các bước thực hiện là: Xác định các chân I2C -> Cấu hình GPIO 
 
 ## c. UART SOFTWARE (GPIO)
 
+Các bước: ***Xác định các chân UART** -> ***Cấu hình GPIO*** -> ***Khởi tạo chân cho UART***
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/58c2a805-2e5e-4c9d-bc28-5f3a7ccafe22)
+
+Hàm truyền nhận:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/ce41848c-c42c-4400-b1e3-91be121c5ec2)
+
+Hàm nhận:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/c05eb440-2095-4466-92a9-ee82a56468f0)
+
+Parity bit:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/a8229798-081d-493c-bec8-fcc8f35a523a)
+
+Code:
+
+            #define TX_Pin     GPIO_Pin_9
+            #define RX_Pin     GPIO_Pin_10
+            #define UART_GPIO  GPIOA
+            //9600bits/1s <=> 9600bits/1000ms <=> 1 bit = 0,10467 = 1 period tie
+            #define BRateTime  105
+            typedef enum{
+            	Parity_Mode_NONE,
+            	Parity_Mode_ODD,
+            	Parity_Mode_EVENT
+            }Parity_Mode;
+            void RCC_Config(){
+            	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+            	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+            }
+            void delay_us(uint32_t delay){
+            		TIM_SetCounter(TIM2,0);
+            		while(TIM_GetCounter(TIM2)<delay){}
+            }
+            void GPIO_Config(){
+            	GPIO_InitTypeDef GPIO_Config;
+            	GPIO_Config.GPIO_Pin = RX_Pin;
+            	GPIO_Config.GPIO_Mode = GPIO_Mode_IN_FLOATING; //cho cho toi khi kia keo xuong moi bat dau nhan nen trang thai ban dau khong xac dinh
+            	GPIO_Init(GPIOA, &GPIO_Config);
+            	
+            	GPIO_Config.GPIO_Pin = TX_Pin;
+            	GPIO_Config.GPIO_Mode = GPIO_Mode_Out_PP;
+            	GPIO_Config.GPIO_Speed = GPIO_Speed_50MHz;
+            	GPIO_Init(GPIOA, &GPIO_Config);
+            }
+            //default status of pin TX is 1
+            void UART_Config(){
+            	GPIO_SetBits(UART_GPIO, TX_Pin);
+            	delay_us(1);
+            }
+            void UART_Transmit(const char DataValue){
+            	GPIO_WriteBit(UART_GPIO,TX_Pin, Bit_RESET);//start bit
+            	delay_us(BRateTime);
+            	//dich tung bit
+            	for(unsigned char i = 0; i<8;i++){
+            		if(((DataValue>>i)&0x1)==0x1){
+            			GPIO_WriteBit(UART_GPIO, RX_Pin, Bit_SET);
+            		}else{
+            			GPIO_WriteBit(UART_GPIO, RX_Pin, Bit_RESET);
+            		}
+            		delay_us(BRateTime);
+            	}
+            	//stop bit
+            	GPIO_WriteBit(UART_GPIO,TX_Pin, Bit_SET);
+            	delay_us(BRateTime);
+            }
+            unsigned char UART_Receive(void){
+            	unsigned char DataValue = 0;
+            	while(GPIO_ReadInputDataBit(UART_GPIO, RX_Pin) == 1);
+            	delay_us(BRateTime);
+            	delay_us(BRateTime/2);
+            	for ( unsigned char i = 0; i < 8; i++ ){
+            		if ( GPIO_ReadInputDataBit(UART_GPIO, RX_Pin) == 1 ){
+            			DataValue += (1<<i);}
+            		delay_us(BRateTime);
+            		}
+            		if ( GPIO_ReadInputDataBit(UART_GPIO, RX_Pin) == 1 ){
+            			delay_us(BRateTime/2);
+            			return DataValue;
+            		} 
+            }
+            uint8_t Parity_Generate(uint8_t data, Parity_Mode Mode){
+            	uint8_t count =0;
+            	for(int i=0; i< 8; i++){
+            		if(data & 0x01){
+            			count++;
+            		}
+            		data>>=1;
+            	}
+            	switch(Mode){
+            		case Parity_Mode_NONE:
+            			return data; 
+            			break;
+            		case Parity_Mode_ODD:
+            			if(count%2){
+            				return ((data<<1)|1);
+            			} else {
+            				return (data<<1);
+            			}
+            			break;
+            		case Parity_Mode_EVENT:
+            			if(!(count%2)){
+            				return ((data<<1)|1);
+            			} else {
+            				return (data<<1);
+            			}
+            			break;
+            		default:
+            			return data;
+            			break;
+            	}
+            }
+            uint8_t Parity_Check(uint8_t data, Parity_Mode Mode){
+            	uint8_t count =0;
+            	for(int i=0; i< 8; i++){
+            		if(data & 0x01){
+            			count++;
+            		}
+            		data>>=1;
+            	}
+            	switch(Mode){
+            		case Parity_Mode_NONE:
+            			return 1; 
+            			break;
+            		case Parity_Mode_ODD:
+            			return (count%2); 
+            			break;
+            		case Parity_Mode_EVENT:
+            			return (!(count%2)); 
+            			break;
+            		default:
+            			return 0;
+            			break;
+            	}
+            }
+
 
 </p>
 
