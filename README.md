@@ -30,7 +30,7 @@ là nhấn nút led sẽ sáng thì làm sao nó biết được là bạn nhấ
          
        - push pull: cũng có 2 chế độ **pull-up & pull-down** giống ở phía trên.
          
-    *Khi nào dùng opendrain và khi nào dùng push-pull? Khi bạn muốn on/off,pwm thì dùng push. Còn opendrain chưa dùng nên chưa biết , nào biết update sau 😊*
+    *Khi nào dùng opendrain và khi nào dùng push-pull? Khi bạn muốn on/off,pwm thì dùng push. Còn opendrain thì với những giao thức nào ở trạng thái mặc định của nó đã có trở kéo lên nguồn rồi thì trong vi điều khiển ko cần dùng nữa ví dụ:làm việc với giao thức I2C 😊*
 
   - Speed: tốc độ đáp ứng thì tùy mình thôi.
     
@@ -455,6 +455,68 @@ Code:
             	}
             }
 
+## D. UART HARDWARE (GPIO)
+</p>
+
+</details>
+
+<details><summary>LESSON 4: INTERRUPT</summary>
+</p>
+
+Interrupt - hay còn gọi là ngắt ngoài, là một tín hiệu khẩn cấp gửi đến bộ xử lí yêu cầu bộ xử lí phải tạm ngừng các hoạt động hiện tại để "nhảy" đến một nơi khác trong chương trình để thực hiện nhiệm vụ khẩn cấp nào đó - nhiệm vụ này gọi là chương trình phục vụ ngắt, ISR (Interrupt Service Routine). Sau khi xử lí xong nhiệm vụ này thì bộ đếm chương trình sẽ trả về giá trị trước đó để bộ xử lí thực hiện công việc còn đang dang dở. Như vậy, ngắt có mức độ ưu tiên cao nhất, thường xử lí các sự kiện bất ngờ nhưng không tốn thời gian. Ngắt có 2 loại: ngắt có thể xuất phát từ tín hiệu bên trong con chip(ngắt báo bộ đếm timer/counter tràn, ngắt báo quá trình gửi dữ liệu bằng RS232 kết) hoặc ngắt do các tác nhân bên ngoài(nhấn button, ngắt báo có 1 gói dữ liệu nhận được).
+
+Ví dụ: cách tổ chức một trường trình ngắt trong chip AVR
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/1051744c-af23-4acb-92ac-0cfc61444d76)
+
+### A. Ngắt ngoài
+Ngắt ngoài là loại ngắt duy nhất độc lập với các thiết bị của chip 
+
++ Để sử dụng ngắt ngoài ta thực hiện các bước sau:*Xác định các chân ngắt ngoài* -> *Cấu hình các chân GPIO*
+
+Trước tiên muốn sử dung bất cứ ngoại vi nào thì mình phải bật Clock của bus gắn với ngoại vi đó, ngoài ra phải bật thêm AFIO. AFTO là những cái funtion thay thế.
+
+ *Bật clock:*
+  
+   void RCC_Config(){
+  
+    	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+  
+    	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+  
+    }
+
+  *Config GPIO là input(đọc tín hiệu ngắt):*
+
+  ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/113fe10d-ead5-4894-905a-990a154dd077)
+
++ Sau khi Config GPIO ở chế độ ngắt ngoài thì mình sẽ cấu hình cho EXTI
+  Những tham số của ngắt ngoài bao gồm: **Line ngắt, Mode, Cạnh ngắt**
+   *EXTI_Line:* Chọn line ngắt.
+  
+   *EXTI_Mode:* Chọn Mode cho ngắt là Ngắt(thực thi hàm ngắt) hay Sự kiện(Không thực thi)
+  
+   *EXTI_Trigger:* Cấu hình cạnh ngắt.
+  
+   *EXTI_LineCmd:* Cho phép ngắt ở Line đã cấu hình.
+  
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/069436e3-fc31-4050-83b5-84c05875d3c3)
+
++ Bộ NVIC cấu hình các tham số ngắt và quản lý các vector ngắt. Các tham số trong bộ này gồm:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/15d6d9c6-2431-4036-90d3-92496b687d26)
+  
+Ví dụ về cấu hình NVIC:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/05d21012-a698-4ec0-a871-9fd14583fc82)
+
+
+Hàm phụ vụ ngắt ngoài: ***EXTIx_IRQHandler()*** (x là line ngắt tương ứng), ***Hàm EXTI_GetITStatus(EXTI_Linex)*** :Kiểm tra cờ ngắt của line x tương ứng. 
+***Hàm EXTI_ClearITPendingBit(EXTI_Linex)***: Xóa cờ ngắt ở line x.
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/5e8e2976-0f6d-4574-80cf-52f29ee3a0bd)
+
+Tóm lại: Cấu hình GPIO ở chế độ ngắt ngoài -> Cấu hình EXTI(line, Ngắt(thực thi) or Sự kiện(không thực thi), cạnh ngắt, cho phép ngắt ở cạnh đó) -> Bộ quản lí các thamm số và quản lí vector ngắt NVIC (Vector Line, độ ưu tiên chính, độ ưu tiên phụ, cho phép ngắt).
 
 </p>
 
