@@ -524,6 +524,12 @@ Tóm lại: Cấu hình GPIO ở chế độ ngắt ngoài -> Cấu hình EXTI(l
 
 <details><summary>LESSON 4: ADC</summary>
 </p>
+Vi điều khiển hay các thiết bị ngày nay đều sử dụng tín hiệu số dựa trên các bit nhị phân để hoạt động. Còn thực tế thì không chỉ mãi là tín hiệu số mà là tín hiệu tương tự và liên tục vì vậy cần phải có thiết bị chuyển đổi từ tín hiệu tương tự sang tín hiệu số. 
+*ADC - Analog to Digital Convert*: bộ chuyển đổi từ tín hiệu tương tự sang tín hiệu số 
+  
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/6489b83b-dd9c-4a2a-9ed0-e8298c28b88d)
+
+
 
 </p>
 
@@ -613,6 +619,8 @@ Khi nạp code thông qua phần mềm, thì phần mềm phải phân tích fil
 #### Thao tác trên bộ nhớ Flash
 Khi làm việt với bootloader chúng ta cần quan tâm xem mình cần làm gì (Data từ file Hex) -> ghi vào đâu? (Address của file Hex).
 - Có 3 loại thao tác với bộ nhớ Flash: đọc - Read, ghi - Write, xóa - Delete.
+
+Bài tập: flash - bootloader
 
 </p>
 
