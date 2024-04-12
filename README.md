@@ -526,8 +526,32 @@ Tóm lại: Cấu hình GPIO ở chế độ ngắt ngoài -> Cấu hình EXTI(l
 </p>
 Vi điều khiển hay các thiết bị ngày nay đều sử dụng tín hiệu số dựa trên các bit nhị phân để hoạt động. Còn thực tế thì không chỉ mãi là tín hiệu số mà là tín hiệu tương tự và liên tục vì vậy cần phải có thiết bị chuyển đổi từ tín hiệu tương tự sang tín hiệu số. 
 *ADC - Analog to Digital Convert*: bộ chuyển đổi từ tín hiệu tương tự sang tín hiệu số 
-  
+
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/6489b83b-dd9c-4a2a-9ed0-e8298c28b88d)
+
+Khả năng chuyển đổi của ADC phụ thuộc vào 2 yếu tố
++ Độ phân giải: Số bit mà ADC sử dụng để mã hóa tín hiệu. Hay còn gọi là số mức tín hiệu được biểu diễn(có độ phân giải càng cao thì độ chính xác càng lớn.)
++ Tần số/Chu kì lấy mẫu: tốc độ/khoảng thời gian giữa 2 lần mã hóa(tần số lấy mẫu càng cao thì chuyển đổi sẽ có độ chính xác càng lớn). Tần số lấy mẫu = 1/(thời gian lấy mẫu + thời gian chuyển đổi).
+### ADC trong stm32
+Trong stm32 có 2 kênh ADC đó là ADC1 và ADC2, mỗi bộ có tối đa 9 channel với nhiều mode hoạt động, kết quả chuyển đổi được lưu trong thanh ghi 16 bit.
+- Độ phân giải: 12 bit
+- Có các ngắt hổ trợ, có thể điều khiển hoạt động ADC bằng xung Trigger.
+- Thời gian chuyển đổi nhanh: 1us tại tần số 65Mhz.
+- Có bộ DMA giúp tăng tốc độ xử lí
+  Sơ đồ khối bộ ADC:
+  
+  ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/7a8be06e-9ff2-4540-af12-c489ac25415e)
+
+***Cấu hình GPIO -> Cấu hình ADC*** 
++ Các chế độ của ADC:
+  >- Single: ADC chỉ đọc 1 kênh duy nhất, và chỉ đọc khi kênh nào được yêu câu.
+  >- Single Continous: sẽ đọc 1 kênh duy nhất, nhưng đọc dữ liệu nhiều lần
+  >- Scan: Multi-Channels: Quét qua và đọc dữ liệu nhiều kênh, nhưng chỉ đọc khi nào được yêu cầu.
+  >- Scan: Continous Multi-Channels Repeat: Quét qua và đọc dữ liệu nhiều kênh, nhưng đọc liên tiếp nhiều lần giống như Single Continous.
+
++ Các tham số:
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/4b56e05e-1ffe-4c63-ace0-3a56b127321f)
 
 
 
