@@ -576,8 +576,44 @@ Vi điều khiển STM32F1 cung cấp 128/64Kb, ngoài lưu trữ MSP, Vector Ta
 ### Bootloader chủ yếu quan tâm đến nạp file nhị phân xuống bộ nhớ của Vi điều khiển, có 2 vấn đề cần được chú ý đó là: Sắp xếp chúng trong bộ nhớ như nào và File nhị phân (cấu trúc, nội dung).
 
  #### Little Endian and Big Endian
- The order in which a block of bytes are story in memory.
+ Most modern computer memory are byte addressible. Each byte in memory has its own unique address. 
+ If a data object take multiple contiguous bytes in memory, the memory address of this object is defined as the lowest address of all bytes this object contains. 
+ 
+ ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/0b203571-5e92-4934-9c18-c748b70c6e58)
+
+Ví dụ: một word gồm 4 bytes được khoanh như hình, mỗi bytes đều có một địa chỉ của chính nó, nhưng địa chỉ của cái word này là địa chỉ của byte thấp nhất trong 4 byte này là 0x20000000.
+*Vậy word được lưu trữ tại 0x20000000 là bao nhiêu?* 
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/bf1a5dd8-8208-421d-bb1a-74e223ebab53)
+
+The anwser is that it depends on endian.
+- Big endian:(big - end: lớn cuối cùng - địa chỉ lớn cuối cùng =>giá trị lớn cuối cùng) thứ tự sắp xếp theo chiều từ nơi địa chỉ thấp nhất đến cao nhất =>if big endian thì value = 01020304
+- Little endian: ngược lại =>value = 04030201
  #### File nhị phân
+ Có một số định dạng file nhị phân thường gặp là: .BIN, .ELF, .HEX
+ + .BIN: định dạng cơ bản nhất của file nhị phân, không cần chính sửa hay trải qua quá trình relocation, câu lệnh sẽ được tải trực tiếp xuống địa chỉ. 
+ + .ELF: định dạng này cần thêm quá trình relocation. Chúng ta có thể nạp vào địa chỉ mà ta mong muốn.
+ + .HEX: định dạng này khá quen thuộc với chúng ta, thường được gen ra từ phần mềm
+👉 Cần nắm được cấu trúc của .HEX
+Chúng ta làm việc với Bootloader nên việc nạp code không thông qua phần mềm hay IDE nữa, chúng ta nghĩ đến việc nạp code thông qua mạng không dây hoặc qua các giao thức SPI,I2C,UART.
+Khi nạp code thông qua phần mềm, thì phần mềm phải phân tích file Hex rồi tải data xuống Flash thông qua ST-Link. Còn ta tự làm thì phải **phân tích file hex**->**tải data xuống Flash** thông qua mạng không giây hoặc các Protocol khác =>***Việc hiểu file .HEX rất quan trọng***
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/778e6bae-3aa8-48db-a18b-259337697e12)
+
+- Start Code: Ở mỗi dòng sẽ luôn bắt đầu bằng dấu hai chấm ':'
+- Byte Count: Ở đây bao gồm 2 chữ số (1 byte) để chỉ thị số byte data có trên dòng tương ứng. 
+- Address: 4 chữ số, đây là địa chỉ offset, địa chỉ này cộng thêm địa chỉ base (chúng ta có thể chọn - ví dụ 0x0800.0000 chẳng hạn) sẽ ra địa chỉ mà data được nạp xuống bộ nhớ FLASH. 
+- Record Type: 2 chữ số, từ 00 đến 05, nói lên ý nghĩa của data. 
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/ce837fe8-67de-42ef-a245-3f5558d5ce9b)
+
+
+- Data: Phần này là dữ liệu sẽ lưu lên FLASH, số byte sẽ được quy định ở trường Byte Count.
+ Checksum: gồm 2 chữ số, dùng để kiểm tra lỗi. Theo quy định thì một line sẽ đúng khi mà byte checksum sẽ bằng ***đảo*** của tổng tất cả các byte còn lại cùng dòng, cộng thêm 1. 
+#### Thao tác trên bộ nhớ Flash
+Khi làm việt với bootloader chúng ta cần quan tâm xem mình cần làm gì (Data từ file Hex) -> ghi vào đâu? (Address của file Hex).
+- Có 3 loại thao tác với bộ nhớ Flash: đọc - Read, ghi - Write, xóa - Delete.
+
 </p>
 
 </details>
