@@ -540,6 +540,32 @@ Tóm lại: Cấu hình GPIO ở chế độ ngắt ngoài -> Cấu hình EXTI(l
 <details><summary>LESSON 6: Flash & BootLoader</summary>
 </p>
 
+Chắc hẳn các bạn đã từng nghe quá trình ***boot*** trong máy tính, nó là một phần quan trọng giúp cho việc khởi động hệ điều hành máy tính. Bootloader là phần mềm quan trọng nạp vào máy tính trước khi khởi động.
+Ta học vi điều khiển phải cần biến đến Bootloader 👉Rỏ ràng máy tính cũng xử dụng nhiều vi xử lí, Bootloader như một firmware nạp sẵn, trước khi máy tính khởi động thì cái firmware này sẽ được gọi, Vi điểu khiển của chúng ta cũng sử dụng lõi vi xử và khi khởi động thì nó sẽ bắt đầu từ đâu?
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/0ea09278-006d-4c9b-8529-67bbcf23f45c)
+
+Nếu có một chương trình bootloader nạp vào trong vi điều khiển, thì trước tiên nó nhảy vào chương trình bootloader thực hiện một số công việc, sau đó mới thực hiện Application.
+ #### Tổ chức bộ nhớ STM32
+- Hiểu được tổ chức bộ nhớ STM32 rất quan trọng trong bootloader. Chúng ta cần nắm chương trình **boot** nằm ở địa chỉ nào, chương trình nằm ở địa chỉ nào và cách phân chia Page của bộ nhớ FLash(stm32f1). Trong vi điều khiển STM có 2 bộ nhớ cần được quan tâm là: bộ nhớ chương trình và bộ nhớ dữ liệu:
+     >- Vùng nhớ code: có thể là FLASH/EEPROM/ROM/OTP,... dùng để lưu code và các lệnh của chương trình
+     >- Vùng nhớ SRAM: sử dụng để kế nối Sram trên chip, dùng để lưu dữ liệu tạm thời khi run-time.
+  
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/8f71965a-ac75-4e2c-b051-857527b898be)
+
+ 👉 Địa chỉ bộ nhớ Flash bắt đầu 0x00000000 nhưng trong vi điều khiển STM32, vùng nhớ code bắt đầu từ địa chỉ 0x0800 0000 khi mình nạp xuống thì nó sẽ mặc định nạp chương trình từ địa chỉ này, với MSP ở 0x0800 0000 và Vector Table bắt đầu từ địa chỉ 0x0800 0004 (Reset_Handler).
+ 
+ ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/1d57354c-7b16-46b3-b4a6-f71e67cd7e63)
+
+Vi điều khiển STM32F1 cung cấp 128/64Kb, ngoài lưu trữ MSP, Vector Table, bộ nhớ Flash sẽ lưu trữ vùng nhớ chương trình ứng dụng của chúng ta, cùng với đó là vùng data.
+👉Để thao tác với bộ nhớ hiệu quả thì bộ nhớ Flash trong STM32 chia thành các Page, mỗi Page có kích thước 1Kb.
+
+👉Bộ nhớ Flash có thể được thao tác ghi **trên từng word**(2bytes/4bytes) nhưng lại chỉ có thể xóa theo từng Page
+=>Vì vậy , chúng ta có thể thực hiện Bootloader bằng cách cài đặt chương trình Bootloader ở một Page nào đó, chẳng hạn như Page. Và cùng lúc đó đặt Firmware application 1 vào Page1, Firmware application 2 vào Page2, Firmware application 3 vào Page3.
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/200f08ce-a419-472b-989d-d4387b2511de)
+
+
 </p>
 
 </details>
