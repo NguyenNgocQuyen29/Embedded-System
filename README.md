@@ -539,7 +539,8 @@ Tóm lại: Cấu hình GPIO ở chế độ ngắt ngoài -> Cấu hình EXTI(l
 
 <details><summary>LESSON 6: Flash & BootLoader</summary>
 </p>
-
+  
+*Nguồn tham khảo: Lập trình điện tử*
 Chắc hẳn các bạn đã từng nghe quá trình ***boot*** trong máy tính, nó là một phần quan trọng giúp cho việc khởi động hệ điều hành máy tính. Bootloader là phần mềm quan trọng nạp vào máy tính trước khi khởi động.
 Ta học vi điều khiển phải cần biến đến Bootloader 👉Rỏ ràng máy tính cũng xử dụng nhiều vi xử lí, Bootloader như một firmware nạp sẵn, trước khi máy tính khởi động thì cái firmware này sẽ được gọi, Vi điểu khiển của chúng ta cũng sử dụng lõi vi xử và khi khởi động thì nó sẽ bắt đầu từ đâu?
 
@@ -558,14 +559,25 @@ Nếu có một chương trình bootloader nạp vào trong vi điều khiển, 
  ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/1d57354c-7b16-46b3-b4a6-f71e67cd7e63)
 
 Vi điều khiển STM32F1 cung cấp 128/64Kb, ngoài lưu trữ MSP, Vector Table, bộ nhớ Flash sẽ lưu trữ vùng nhớ chương trình ứng dụng của chúng ta, cùng với đó là vùng data.
+
 👉Để thao tác với bộ nhớ hiệu quả thì bộ nhớ Flash trong STM32 chia thành các Page, mỗi Page có kích thước 1Kb.
 
 👉Bộ nhớ Flash có thể được thao tác ghi **trên từng word**(2bytes/4bytes) nhưng lại chỉ có thể xóa theo từng Page
-=>Vì vậy , chúng ta có thể thực hiện Bootloader bằng cách cài đặt chương trình Bootloader ở một Page nào đó, chẳng hạn như Page. Và cùng lúc đó đặt Firmware application 1 vào Page1, Firmware application 2 vào Page2, Firmware application 3 vào Page3.
+=>Vì vậy , chúng ta có thể thực hiện Bootloader bằng cách cài đặt chương trình Bootloader ở một Page nào đó, chẳng hạn như Page0, Và cùng lúc đó đặt Firmware application 1 vào Page1, Firmware application 2 vào Page2, Firmware application 3 vào Page3.
 
 ![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/200f08ce-a419-472b-989d-d4387b2511de)
 
+ 👉Chúng ta sẽ bắt đầu với chương trình Bootloader, được đặt tại địa chỉ 0x0800 0000. Ngoài ra, chúng ta thấy sự xuất hiện của 3 Firmware khác:
+ 
+ + *Factory Firmare:* là phiên bản đầu tiên của Firmware mà nhà sản xuất cung cấp cho người dùng.
+ + *Current Firmware:* là phiên bản hiện tại của Firmware đang chạy trên vi điều khiển, được chúng ta lưu trên 1 Page nào đó.
+ + *FOTA Firmware:* là phiên bản cập nhật mới của firmware.
 
+### Bootloader chủ yếu quan tâm đến nạp file nhị phân xuống bộ nhớ của Vi điều khiển, có 2 vấn đề cần được chú ý đó là: Sắp xếp chúng trong bộ nhớ như nào và File nhị phân (cấu trúc, nội dung).
+
+ #### Little Endian and Big Endian
+ The order in which a block of bytes are story in memory.
+ #### File nhị phân
 </p>
 
 </details>
