@@ -1,4 +1,4 @@
-![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/06f1c278-6127-4816-9a86-4fa04218a35b)<details><summary>LESSON 1: GPIO</summary>
+<details><summary>LESSON 1: GPIO</summary>
 </p>
   
 ### Để cấu hình cho ngoại vi GPIO ta follow theo các bước sau: ###
