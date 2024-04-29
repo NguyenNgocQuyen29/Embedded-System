@@ -1,4 +1,4 @@
-<details><summary>LESSON 1: GPIO</summary>
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/06f1c278-6127-4816-9a86-4fa04218a35b)<details><summary>LESSON 1: GPIO</summary>
 </p>
   
 ### Để cấu hình cho ngoại vi GPIO ta follow theo các bước sau: ###
@@ -650,9 +650,31 @@ Bài tập: flash - bootloader
 
 </details>
 
-
 <details><summary>LESSON 7: CAN</summary>
 </p>
+
+</p>
+
+</details>
+
+<details><summary>Một vài câu hỏi ôn tập</summary>
+</p>
+  
+### 1. Destructor trong Class có thể bị overloaded không?
+- Không thể bị overload(nạp chồng).
+- Nguyên nhân: trong một class chỉ có 1 destructor.
+
+### 2. Function overloading và operator overloading?
+- Function loading là một tính năng của ngôn ngữ C(không có dùng trong C). Kỹ thuật này cho phép sử dụng cùng một tên gọi cho nhiều hàm(có cùng mục đích) nhưng khác kiểu dữ liệu tham số hoặc số lượng tham số truyền vào. Cùng kiểu dữ liệu trả về và tham số truyền vào là tham trị không phải là tham chiếu.
+- operator overloading: là 1 tính năng trong c++, cho phép thực hiện các toán tử tạo ra từ class.
+
+### 3. So sánh struct với class
+- Mặc định: trong struct mặc định là public, một class mặc định truy cập là private.
+- Mục đích: struct đại diện cho một cấu trúc dữ liệu đơn giản, trong khi class được sử dụng để tạo  một đối tương. 
+
+### 4. Làm sao để biết data gửi đi trong SPI,I2C là đúng?
+- Thêm 1 bit check sum data.
+- Thuật toán như CRC.
 
 </p>
 
