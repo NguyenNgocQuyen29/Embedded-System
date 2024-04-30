@@ -660,6 +660,8 @@ Bài tập: flash - bootloader
 <details><summary>Một vài câu hỏi ôn tập</summary>
 </p>
   
+## C/C++
+
 ### 1. Destructor trong Class có thể bị overloaded không?
 - Không thể bị overload(nạp chồng).
 - Nguyên nhân: trong một class chỉ có 1 destructor.
@@ -671,10 +673,29 @@ Bài tập: flash - bootloader
 ### 3. So sánh struct với class
 - Mặc định: trong struct mặc định là public, một class mặc định truy cập là private.
 - Mục đích: struct đại diện cho một cấu trúc dữ liệu đơn giản, trong khi class được sử dụng để tạo  một đối tương. 
+### 4. Từ khóa typedef và define
+- Typedef(type defination)- định nghĩa kiểu:kết thúc bằng dấu *;* , nó đơn giản chỉ là, sử dụng một cái tên mới để thay thế cho những kiểu dữ liệu đã cs=ó trong ngôn ngữ lập trình C/C++, được sử lí bởi *compiler*.
+- Define: không có dấu ; cuối cùng, define có thể sử dụng định để định nghĩa kiểu dl giống typedef,  ngoài ra nó cũng có thể định nghĩa một giá trị, hoặc cũng có thể định nghĩa cấu trúc như for or những câu lệnh, được sử lí bởi quá trình *preprocessor.*
+### 5. Mặc định
+- Nếu chúng ta chưa khai báo giá trị thì đối với giá trị số nó sẽ tự khai báo với giá trị là 0, còn với kí tự thì nó khai báo với giá trị là NULL.
+### 6. Inline Function
+- key: inline
+- Khi dùng hàm này thì tác dụng của nó sẽ bỏ qua quá trình gọi hàm thông thường , thay vì gọi hàm thì nó sẽ thực thi luôn
+  => tốc độ nhanh hơn, nhưng nếu dùng nhiều nó làm cho cái kích thước của bộ nhớ lớn.
+Lưu ý: Khi dùng inline , hàm của nó chỉ 1 dòng ,1 phép toán đơn giản chứ nếu phức tạp quá thì không nên sử dụng hàm inline.
+### 6. Kích thước struct, union, enum?
+- Struct: bằng tổng khối lượng của các phần tử cộng với padding nếu có.
+- Union: bằng kích thước của phần tử lớn nhất cộng với padding nếu
+- Enum: bằng với kích thước kiểu int (tùy thuộc vào cấu trúc của vi xử lí máy tính là 32bit hay 64bit, 32bit:4byte, 64bit:8 byte)
+## Embedded 
 
-### 4. Làm sao để biết data gửi đi trong SPI,I2C là đúng?
+### 1. Làm sao để biết data gửi đi trong SPI,I2C là đúng?
 - Thêm 1 bit check sum data.
 - Thuật toán như CRC.
+### 2. DMA khác gì với ngắt truyền thông?
+- Khi mình sử dụng DMA thì dữ liệu được gửi đến hoặc truyền đi được xử không có sự can thiệp của CPU, tức là nó hoạt động gần như là song song với CPU.
+- Bản chất của ngắt là đợi một tín hiệu ngắt truyền đến hoặc gửi đi và nó sử lí những tác vụ ngắt tưng ứng với tín hiệu ngắt, tức là CPU làm việc
+  => Tốc độc của DMA nhanh hơn vì không có sự can thiệp của CPU, còn ngắt thì đòi hỏi CPU phải xử lí dữ liệu mỗi khi có ngắt xảy ra.
 
 </p>
 
