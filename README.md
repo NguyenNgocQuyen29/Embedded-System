@@ -696,6 +696,33 @@ Lưu ý: Khi dùng inline , hàm của nó chỉ 1 dòng ,1 phép toán đơn gi
 - Khi mình sử dụng DMA thì dữ liệu được gửi đến hoặc truyền đi được xử không có sự can thiệp của CPU, tức là nó hoạt động gần như là song song với CPU.
 - Bản chất của ngắt là đợi một tín hiệu ngắt truyền đến hoặc gửi đi và nó sử lí những tác vụ ngắt tưng ứng với tín hiệu ngắt, tức là CPU làm việc
   => Tốc độc của DMA nhanh hơn vì không có sự can thiệp của CPU, còn ngắt thì đòi hỏi CPU phải xử lí dữ liệu mỗi khi có ngắt xảy ra.
+### 3. Khi cấu hình timer cần lưu ý những tham số gì?
+1. Chế độ hoạt động (Mode)
+   - Chế độ đếm (Count Mode)
+   - Chế độ PWM(Pulse Width Modulation)
+   - Chế độ ngắt (interrupt mode)
+2. Tần số hoạt động
+3. Chu kì và thời gian đếm (period and counting time):  xác định mỗi chu kì là bao nhiêu
+4. Bộ chia tần số (Prescaler): đếm bao nhiêu lần để tràn (tần số hoạt động mong muốn của timer).
+### 4. Khi cấu hình ADC cần lưu ý những tham số gì?
+***Chế độ hoạt động (Operating Mode)***:
+- single conversion mode (chế độ chuyển đổi đơn): ADC thực hiện một lần chuyển đổi khi được kích hoạt.
+  
+- continuous conversion mode (chế độ chuyển đổi liên tục) :ADC liên tục thực hiện các chuyển đổi mà không cần phải kích hoạt lại sau mỗi lần chuyển đổi.
+  
+- scan mode (chế độ quét nhiều kênh).
+
+***Độ phân giải (Resolution)***:8-bit đến 12-bit.
+
+***Nguồn tham chiếu (Reference Voltage):*** Thường là nguồn điện hoặc nguồn tham chiếu nội bộ trên vi điều khiển.
+
+***Chu kỳ chuyển đổi (Conversion Time):*** Xác định thời gian mà ADC sẽ thực hiện mỗi lần chuyển đổi. Thời gian này phụ thuộc vào độ phân giải của ADC và tần số Clock.
+
+***Kênh đầu vào (Input Channel)***: Chọn kênh đầu vào mà ADC sẽ chuyển đổi. STM32F4 thường có nhiều kênh ADC khác nhau cho phép đo lường nhiều tín hiệu khác nhau.
+
+***Ngắt (Interrupt):*** Cấu hình xem ADC có cần phát sinh ngắt sau mỗi lần chuyển đổi hay không. Nếu cần, bạn cần cấu hình và xử lý hàm ngắt tương ứng để xử lý kết quả chuyển đổi.
+
+***Bộ chia tỉ số (Prescaler):*** Xác định bộ chia tần số được sử dụng để chia tần số Clock đầu vào của ADC, từ đó xác định tốc độ chuyển đổi của ADC.
 
 </p>
 
