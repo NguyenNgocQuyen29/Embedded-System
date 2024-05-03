@@ -653,6 +653,45 @@ Bài tập: flash - bootloader
 <details><summary>LESSON 7: CAN</summary>
 </p>
 
+- CANBus (Controller Are Network Bus) is a robust and widely used communication protocol in the field of automotive and industrial applications.
+- It has since become a standard in many industries do to its reliability, real-time capabilities and flexibility.
+- ***Là chuẩn truyền thông nối tiếp, bán song công ,bất đồng , tốc độ cao***.
+- ***CAN gồm 2 dây (CAN-H & CAN-L)***
+- ***CAN gồ 4 chế độ(Mode)***
+  
+    + Data Frame(khung dữ liệu): gửi dữ liệu đến 1 node.
+    + Romote Frame(khung yêu cầu hay khung điều khiển): gửi yêu cầu đến 1 node và yêu cầu 1 node gửi lại.
+    + Error Frame: Khi một node phát hiện lỗi CRC thì ngay lập tức nó sẽ không gửi data mà nó sẽ gửi một Error Frame tới các node khác để thông báo lỗi, các node khác nhận thông báo này sẽ tìm biện pháp xử lí hoặc thông báo lỗi.
+    + Overflow Frame(khung báo tràn): một node trong mạng gặp trình trạng quá tải(nguyên nhân có thể do 2 node cùng truyền tạo ra quá tải thì 1 node sẽ gửi 1 overflow frame tới các node khác , các node khác nhận được thông báo này sẽ điều chỉnh tốc độ truyền.
+      
+- ***Trong mạng CAN các thiết bị trong mạng gọi là *node*. Một node bao gồm:***
+    
+    + Micro-controller: chịu trách nhiệm truyền nhận, xử lí data.
+    + CAN Controller: thực hiện chức năng của CAN (CAN Tx & CAN Rx).
+    + CAN Tranceiver: cấp điện áp cho bus
+
+  
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/fcc4bcaf-60df-4419-8073-2d7e717cbff8)
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/616e725d-312b-483a-a553-1f5f7d7d657e)
+
++ CANTx & CANRx: là những digital signals.
++ Ta không có sử dụng những tín hiệu này để giao tiếp với các node khác mà sẽ sử dụng **differential signals** để giao tiếp với các node khác.
+  
+Lí do: Mặc dù *digital signals* nó sử dụng ít dây hơn(1 dây) nhưng nó là tín hiệu điện, những tín hiệu 1 đầu có thể tạo ra nhiễu. Còn những *differential signals* truyền bằng 2 tín hiệu bổ sung, mỗi tín hiệu sẽ có dây dẫn riêng nếu có sự chênh lệch thì máy thu sẽ phản ứng (ví dụ: khi có nhiễu ở kênh này thì kênh kia bổ sung rồi 2 tín hiệu OR lại tạo thành *clean signals)
+
+- ***Trong một thời điểm chỉ có 1 node truyền và các node khác phải nhận***.
+
+#### Data Fram của CAN
+
+![image](https://github.com/NguyenNgocQuyen29/Embedded-System/assets/124705679/817b7f15-e25b-4bbc-9ec8-c51feac3d1ef)
+
+The CAN data Frame is composed of seven field: SOF, Arbitration, Control, CRC(cyclical redundancy), ACK(acknowledge) and EOF(end of frame).
+1. Tín hiệu bắt đầu (Start Of Frame - SOF) : sẽ bị kéo xuống 0.
+2. Trường xác định quyền ưu tiên(Arbitration Field): trường này bao gồm 11 bit ID và 1 bit RTR(Remote Tranmission Request)
++ Nếu mode là Data Frame thì bit RTR này = 0. Tức là MCUA sẽ gửi dữ liệu cho MCUB.
++ Nếu mode là Romote Frame thì bit RTR này = 1. Tức là MCUA sẽ gửi yêu cầu nói MCUB gửi dữ liệu.
+
 </p>
 
 </details>
