@@ -71,7 +71,7 @@ FlashStatus Flash_Read(volatile uint32_t startAddr, uint8_t* bufferRead, uint32_
 }while(len > 0U);
 	return FLASH_NOERROR;
 } 
-uint8_t dataWrite[8] = {2,9,1,0,2,0,0,2};
+uint8_t dataWrite[8] = {2,9,1,0,2,0,0,2}; //ngocquyen29102002
 int main(){
 	uint8_t dataBuffer[8] = {0};
 	Flash_Erase((uint32_t)0x08001000);
