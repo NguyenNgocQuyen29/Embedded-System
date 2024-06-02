@@ -4,11 +4,22 @@ typedef enum{
 	FLASH_NOERROR
 }FlashStatus;
 
-
+/*
+* Function: Flash_Unlock
+* Description: This function is used to declare KEY to unclock the Flash Memory
+*/
 void Flash_Unlock(void){
 	FLASH->KEYR = 0x45670123;
 	FLASH->KEYR = 0xCDEF89AB;
 }
+/*
+* Function: Flash_Erase
+* Description: This function is used to erase each sector of the Flash memory
+* Input:
+*	startAddr - start address of sector want to delete
+* Output:
+*	none
+*/
 void Flash_Erase(volatile uint32_t startAddr){
 	while((FLASH->SR&FLASH_SR_BSY) == FLASH_SR_BSY){} //FLASH_SR_BSY
 	
@@ -27,6 +38,16 @@ void Flash_Erase(volatile uint32_t startAddr){
 	FLASH->CR &= ~(uint32_t)FLASH_CR_PER;
 	FLASH->CR &= ~(uint32_t)FLASH_CR_STRT;
 }
+/*
+* Function: Flash_Write
+* Description: This function is used to write data in the Flash memory
+* Input:
+*	startAddr - start address of sector want to write
+	bufferWrite - 
+ 	len - lengh of sequence want to write
+* Output:
+*	return status confirm write ok or not
+*/
 FlashStatus Flash_Write(volatile uint32_t startAddr, uint8_t* bufferWrite, uint32_t len){
 	uint32_t count = 0U;
 	/*Do dai cua buffer write vao khong the la 0, chieu dai cua buffer cung khong the la 0, truyen 16bit nen cung khong the la so le*/
@@ -48,6 +69,16 @@ FlashStatus Flash_Write(volatile uint32_t startAddr, uint8_t* bufferWrite, uint3
 		FLASH->CR &= ~(uint32_t)FLASH_CR_PG;
 		return FLASH_NOERROR;
 }
+/*
+* Function: Flash_Read
+* Description: This function is used to read data in the Flash memory
+* Input:
+*	startAddr - start address of sector want to read
+	bufferWrite - 
+ 	len - lengh of sequence want to write
+* Output:
+*	return status confirm read ok or not
+*/
 FlashStatus Flash_Read(volatile uint32_t startAddr, uint8_t* bufferRead, uint32_t len){
 	if((startAddr==0x00U)||(len==0U)){
 		return FLASH_ERROR;
